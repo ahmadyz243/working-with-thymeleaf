@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "ISO-8859-1" />
+        <link href = "css/styles.css" rel = "stylesheet"/>
+        <title>Spring Boot thymeleaf</title>
+    </head>
+    <body>
+
+        <h4>Welcome to Thymeleaf Spring Boot web application</h4>
+
+        <p th:text="#{welcome.message}"></p>
+
+        <p th:text="${serverTime}"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="student: ${students}">
+                    <td th:text="${student.id}"></td>
+                    <td th:text="${student.name}"></td>
+                </tr>
+                <tr th:each="student: ${students}">
+                    <td th:if="${student.gender} == 'F'" th:text="Female"></td>
+                    <td th:unless="${student.gender} == 'F'" th:text="Male"></td>
+                </tr>
+                <tr th:each="student: ${students}">
+                    <td th:switch="${student.gender}">
+                      <span th:case="M">Agha</span>
+                      <span th:case="F">Khanom</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <form action="#" th:action="@{/print-student}" th:object="${student}" method="post">
+            <input type="number" name="id" th:field="*{id}" required>
+            <input type="text" name="name" th:field="*{name}">
+            <input type="text" name="gender" th:field="*{gender}">
+            <input type="submit">
+            <br>
+
+            <ul>
+                <li th:each="err : ${#fields.errors('id')}" th:text="${err}" ></li>
+                <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+            </ul>
+
+            <ul>
+                <li th:errors="*{id}" />
+                <li th:errors="*{name}" />
+            </ul>
+
+            <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>
+
+            <div th:each="err : ${#fields.errors('all')}" th:text="${err}"></div>
+
+        </form>
+
+        <br>
+
+        <tr th:each="student: ${students}">
+            <td th:text="${{student.name}}" />
+        </tr>
+
+    </body>
+</html>
